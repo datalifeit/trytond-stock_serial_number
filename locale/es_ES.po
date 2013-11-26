@@ -1,0 +1,19 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:stock.move.split.start,end_lot:"
+msgid "End Lot"
+msgstr "Lote final"
+
+msgctxt "field:stock.move.split.start,lots:"
+msgid "Lot"
+msgstr "Lote"
+
+msgctxt "field:stock.move.split.start,product:"
+msgid "Product"
+msgstr "Producto"
+
+msgctxt "field:stock.move.split.start,start_lot:"
+msgid "Start Lot"
+msgstr "Lote inicial"

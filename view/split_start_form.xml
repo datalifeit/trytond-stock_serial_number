@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<data>
+    <xpath expr="/form" position="inside">
+        <newline/>
+        <label name="start_lot"/>
+        <field name="start_lot"/>
+        <label name="end_lot"/>
+        <field name="end_lot"/>
+        <field name="product" invisible="1"/>
+        <newline/>
+        <field name="lots" colspan="6"/>
+    </xpath>
+</data>
