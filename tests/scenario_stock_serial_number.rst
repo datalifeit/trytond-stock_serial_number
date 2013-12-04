@@ -123,16 +123,9 @@ Add a line of 10 quantities of same product::
 Split the line into lots from 1 to 10::
 
     >>> Lot = Model.get('stock.lot')
-    >>> first_lot, last_lot = Lot.create([{
-    ...         'number': '1',
-    ...         'product': product.id,
-    ...     }, {
-    ...         'number': '10',
-    ...         'product': product.id,
-    ...     }], config.context)
     >>> shipment_out.reload()
-    >>> first_lot = Lot(first_lot)
-    >>> last_lot = Lot(last_lot)
+    >>> first_lot = '1'
+    >>> last_lot = '10' 
     >>> move, = shipment_out.outgoing_moves
     >>> split = Wizard('stock.move.split', models=[move])
     >>> split.form.quantity == 1
@@ -141,6 +134,7 @@ Split the line into lots from 1 to 10::
     True
     >>> split.form.start_lot = first_lot
     >>> split.form.end_lot = last_lot
+    >>> split.form.count = None
     >>> split.execute('split')
     >>> shipment_out.reload()
     >>> len(shipment_out.outgoing_moves)
