@@ -105,8 +105,11 @@ class SplitMove:
         pool = Pool()
         Move = pool.get('stock.move')
         move = Move(Transaction().context['active_id'])
+        lots = None
+        if hasattr(self.start, 'lots'):
+            lots = self.start.lots
         move.split_by_lot(self.start.quantity, self.start.uom,
-            count=self.start.count, lots=self.start.lots,
+            count=self.start.count, lots=lots,
             start_lot=self.start.start_lot,
             end_lot=self.start.end_lot)
         return 'end'

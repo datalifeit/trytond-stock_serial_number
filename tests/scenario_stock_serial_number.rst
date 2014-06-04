@@ -125,7 +125,7 @@ Split the line into lots from 1 to 10::
     >>> Lot = Model.get('stock.lot')
     >>> shipment_out.reload()
     >>> first_lot = '1'
-    >>> last_lot = '10' 
+    >>> last_lot = '10'
     >>> move, = shipment_out.outgoing_moves
     >>> split = Wizard('stock.move.split', models=[move])
     >>> split.form.quantity == 1
