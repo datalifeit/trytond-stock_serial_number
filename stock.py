@@ -7,10 +7,21 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
-__all__ = ['Move', 'SplitMoveStart', 'SplitMove']
+__all__ = ['Template', 'Move', 'SplitMoveStart', 'SplitMove']
 __metaclass__ = PoolMeta
 
 NUMBER_REGEXP = re.compile("(\d+)")
+
+
+class Template:
+    __name__ = 'product.template'
+
+    serial_number = fields.Boolean('Serial Number',
+        states={
+            'invisible': ~Eval('type').in_(['goods', 'assets']),
+            },
+        depends=['type'], help='If marked it won\'t be allowed to move this '
+        'product in quantities diferent than 1.')
 
 
 class Move:
@@ -21,7 +32,20 @@ class Move:
         super(Move, cls).__setup__()
         cls._error_messages.update({
             'no_numbers': ('No numbers found in string "%s".'),
+            'serial_number': ('Move "%(move)s" can not be done as its product '
+                    '"%(product)s" is marked as serial number and its quantity'
+                    ' is different than 1.'),
             })
+
+    @classmethod
+    def do(cls, moves):
+        for move in moves:
+            if move.product.serial_number and move.quantity != 1.0:
+                cls.raise_user_error('serial_number', {
+                        'move': move.rec_name,
+                        'product': move.product.rec_name,
+                        })
+        super(Move, cls).do(moves)
 
     def get_lot_range(self, start_lot, end_lot):
         " Return a lot range from start_lot to end_lot"

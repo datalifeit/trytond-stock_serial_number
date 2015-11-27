@@ -7,6 +7,7 @@ from .stock import *
 
 def register():
     Pool.register(
+        Template,
         Move,
         SplitMoveStart,
         module='stock_serial_number', type_='model')

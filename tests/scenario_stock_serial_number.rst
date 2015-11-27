@@ -83,6 +83,7 @@ Create product::
     >>> template.type = 'goods'
     >>> template.list_price = Decimal('20')
     >>> template.cost_price = Decimal('8')
+    >>> template.serial_number = True
     >>> template.save()
     >>> product.template = template
     >>> product.save()
@@ -143,3 +144,21 @@ Split the line into lots from 1 to 10::
     >>> len(lots)
     10
 
+
+We are not allowed to make a move of more than ::
+
+    >>> move = StockMove()
+    >>> move.product = product
+    >>> move.uom = unit
+    >>> move.quantity = 10
+    >>> move.from_location = output_loc
+    >>> move.to_location = customer_loc
+    >>> move.company = company
+    >>> move.unit_price = Decimal('1')
+    >>> move.currency = currency
+    >>> move.click('do')
+    Traceback (most recent call last):
+        ...
+    UserError: ('UserError', (u'Move "10.0u Product" can not be done as its product "Product" is marked as serial number and its quantity is different than 1.', ''))
+    >>> move.quantity = 1
+    >>> move.click('do')
