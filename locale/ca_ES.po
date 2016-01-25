@@ -17,7 +17,7 @@ msgstr "No s'ha trobat números al text \"%s\"."
 
 msgctxt "field:product.template,serial_number:"
 msgid "Serial Number"
-msgstr "Número de série"
+msgstr "Número de sèrie"
 
 msgctxt "field:stock.move.split.start,end_lot:"
 msgid "End Lot"
