@@ -8,13 +8,13 @@ from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
 __all__ = ['Template', 'Move', 'SplitMoveStart', 'SplitMove']
-__metaclass__ = PoolMeta
 
 NUMBER_REGEXP = re.compile("(\d+)")
 
 
 class Template:
     __name__ = 'product.template'
+    __metaclass__ = PoolMeta
 
     serial_number = fields.Boolean('Serial Number',
         states={
@@ -26,6 +26,7 @@ class Template:
 
 class Move:
     __name__ = 'stock.move'
+    __metaclass__ = PoolMeta
 
     @classmethod
     def __setup__(cls):
@@ -104,6 +105,7 @@ class Move:
 
 class SplitMoveStart:
     __name__ = 'stock.move.split.start'
+    __metaclass__ = PoolMeta
 
     product = fields.Many2One('product.product', 'Product', readonly=True)
     lots = fields.Many2Many('stock.lot', None, None, 'Lot', domain=[
@@ -115,6 +117,7 @@ class SplitMoveStart:
 
 class SplitMove:
     __name__ = 'stock.move.split'
+    __metaclass__ = PoolMeta
 
     def default_start(self, fields):
         pool = Pool()
