@@ -40,7 +40,7 @@ class Move:
     @classmethod
     def do(cls, moves):
         for move in moves:
-            if move.product.serial_number and move.quantity != 1.0:
+            if move.product.template.serial_number and move.quantity != 1.0:
                 cls.raise_user_error('serial_number', {
                         'move': move.rec_name,
                         'product': move.product.rec_name,
