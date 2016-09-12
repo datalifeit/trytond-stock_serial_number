@@ -8,7 +8,7 @@ msgid ""
 "as serial number and its quantity is different than 1."
 msgstr ""
 "No se puede realizar el movimiento \"%(move)s\" porqué su producto "
-"\"%(product)s\" esta marcado cómo numero de serie pero su cantidad es "
+"\"%(product)s\" esta marcado cómo número de serie pero su cantidad es "
 "distinta de 1."
 
 msgctxt "error:stock.move:"
