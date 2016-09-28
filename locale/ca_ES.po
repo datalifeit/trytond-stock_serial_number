@@ -1,6 +1,14 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:product.template:"
+msgid ""
+"You cannot change the serial number for a product which is associated to "
+"stock moves."
+msgstr ""
+"No podeu canviar el número de serie d'un producte que està associat amb "
+"moviments d'estoc."
 
 msgctxt "error:stock.move:"
 msgid ""

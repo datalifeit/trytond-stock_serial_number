@@ -23,6 +23,17 @@ class Template:
         depends=['type'], help='If marked it won\'t be allowed to move this '
         'product in quantities diferent than 1.')
 
+    @classmethod
+    def __setup__(cls):
+        super(Template, cls).__setup__()
+        cls._error_messages.update({
+                'change_serial_number': ('You cannot change the serial number '
+                    'for a product which is associated to stock moves.'),
+                })
+        cls._modify_no_move.append(
+            ('serial_number', 'change_serial_number'),
+            )
+
 
 class Move:
     __name__ = 'stock.move'
@@ -41,6 +52,9 @@ class Move:
     @classmethod
     def do(cls, moves):
         for move in moves:
+            # in case that remove inventory move, the outgoing move is 0.0
+            if move.quantity == 0.0:
+                continue
             if move.product.serial_number and move.quantity != 1.0:
                 cls.raise_user_error('serial_number', {
                         'move': move.rec_name,
