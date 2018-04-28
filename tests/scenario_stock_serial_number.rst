@@ -12,21 +12,15 @@ Imports::
     >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
+    >>> from trytond.tests.tools import activate_modules
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> today = datetime.date.today()
 
-Create database::
-
-    >>> config = config.set_trytond()
-    >>> config.pool.test = True
 
 Install stock Module::
 
-    >>> Module = Model.get('ir.module')
-    >>> modules = Module.find([('name', '=', 'stock_serial_number')])
-    >>> Module.install([x.id for x in modules], config.context)
-    >>> Wizard('ir.module.install_upgrade').execute('upgrade')
+  >>> config = activate_modules('stock_serial_number')
 
 Create company::
 
@@ -51,10 +45,10 @@ Create product::
     >>> template.default_uom = unit
     >>> template.type = 'goods'
     >>> template.list_price = Decimal('20')
-    >>> template.cost_price = Decimal('8')
     >>> template.serial_number = True
     >>> template.save()
     >>> product.template = template
+    >>> product.cost_price = Decimal('8')
     >>> product.save()
 
 Get stock locations::
@@ -119,9 +113,7 @@ We are not allowed to make a move of more than ::
     >>> move.from_location = output_loc
     >>> move.to_location = customer_loc
     >>> move.unit_price = Decimal('1')
-    >>> move.click('do')
+    >>> move.click('do') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
-    UserError: ('UserError', (u'Move "10.0u Product" can not be done as its product "Product" is marked as serial number and its quantity is different than 1.', ''))
-    >>> move.quantity = 1
-    >>> move.click('do')
+    UserError: ...
