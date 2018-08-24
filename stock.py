@@ -1,7 +1,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 import re
-from itertools import izip
+
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
@@ -12,9 +12,8 @@ __all__ = ['Template', 'Move', 'SplitMoveStart', 'SplitMove']
 NUMBER_REGEXP = re.compile("(\d+)")
 
 
-class Template:
+class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
-    __metaclass__ = PoolMeta
 
     serial_number = fields.Boolean('Serial Number',
         states={
@@ -24,9 +23,8 @@ class Template:
         'product in quantities diferent than 1.')
 
 
-class Move:
+class Move(metaclass=PoolMeta):
     __name__ = 'stock.move'
-    __metaclass__ = PoolMeta
 
     @classmethod
     def __setup__(cls):
@@ -97,15 +95,14 @@ class Move:
         #Last move must be without lot
         if count < self.quantity / quantity:
             lots.append(None)
-        for lot, move in izip(lots, moves):
+        for lot, move in zip(lots, moves):
             move.lot = lot
             move.save()
         return moves
 
 
-class SplitMoveStart:
+class SplitMoveStart(metaclass=PoolMeta):
     __name__ = 'stock.move.split.start'
-    __metaclass__ = PoolMeta
 
     product = fields.Many2One('product.product', 'Product', readonly=True)
     lots = fields.Many2Many('stock.lot', None, None, 'Lot', domain=[
@@ -115,9 +112,8 @@ class SplitMoveStart:
     end_lot = fields.Char('End Lot')
 
 
-class SplitMove:
+class SplitMove(metaclass=PoolMeta):
     __name__ = 'stock.move.split'
-    __metaclass__ = PoolMeta
 
     def default_start(self, fields):
         pool = Pool()
