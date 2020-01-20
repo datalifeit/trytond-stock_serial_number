@@ -66,9 +66,9 @@ class Move(metaclass=PoolMeta):
         """
         pool = Pool()
         Lot = pool.get('stock.lot')
+        lots = []
+        to_create = []
         if not lots and start_lot and end_lot:
-            to_create = []
-            lots = []
             for number in self.get_lot_range(start_lot, end_lot):
                 current_lots = Lot.search([
                         ('product', '=', self.product),
