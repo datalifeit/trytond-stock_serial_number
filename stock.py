@@ -32,7 +32,8 @@ class Move(metaclass=PoolMeta):
     @classmethod
     def do(cls, moves):
         for move in moves:
-            if move.product.template.serial_number and move.quantity != 1.0:
+            # Allow only zero or 1 as quantity
+            if move.product.template.serial_number and move.quantity > 1.0:
                 raise UserError(gettext('stock_serial_number.serial_number',
                     move=move.rec_name,
                     product=move.product.rec_name))
