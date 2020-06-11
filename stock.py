@@ -12,7 +12,7 @@ from trytond.exceptions import UserError
 
 __all__ = ['Template', 'Move', 'SplitMoveStart', 'SplitMove']
 
-NUMBER_REGEXP = re.compile("(\d+)")
+NUMBER_REGEXP = re.compile(r'(\d+)')
 
 
 class Template(metaclass=PoolMeta):
