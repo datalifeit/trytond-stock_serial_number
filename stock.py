@@ -6,8 +6,6 @@ from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
-from trytond.i18n import gettext
-from trytond.exceptions import UserError
 
 
 __all__ = ['Template', 'Move', 'SplitMoveStart', 'SplitMove']
@@ -30,12 +28,23 @@ class Move(metaclass=PoolMeta):
     __name__ = 'stock.move'
 
     @classmethod
+    def __setup__(cls):
+        super(Move, cls).__setup__()
+        cls._error_messages.update({
+            'no_numbers': ('No numbers found in string "%s".'),
+            'serial_number': ('Move "%(move)s" can not be done as its product '
+                    '"%(product)s" is marked as serial number and its quantity'
+                    ' is different than 1.'),
+            })
+
+    @classmethod
     def do(cls, moves):
         for move in moves:
             if move.product.template.serial_number and move.quantity != 1.0:
-                raise UserError(gettext('stock_serial_number.serial_number',
-                    move=move.rec_name,
-                    product=move.product.rec_name))
+                cls.raise_user_error('serial_number', {
+                        'move': move.rec_name,
+                        'product': move.product.rec_name,
+                        })
         super(Move, cls).do(moves)
 
     def get_lot_range(self, start_lot, end_lot):
@@ -44,8 +53,7 @@ class Move(metaclass=PoolMeta):
             r = NUMBER_REGEXP.search(string)
             groups = r.groups()
             if not groups:
-                raise UserError(gettext('stock_serial_number.no_numbers',
-                    number=string))
+                self.raise_user_error('no_numbers', string)
             value, = groups
             return int(value)
         start = search_number(start_lot)
