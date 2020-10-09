@@ -24,6 +24,10 @@ class Template(metaclass=PoolMeta):
         'product in quantities diferent than 1.')
 
 
+class Product(metaclass=PoolMeta):
+    __name__ = 'product.product'
+
+
 class Move(metaclass=PoolMeta):
     __name__ = 'stock.move'
 
@@ -85,12 +89,11 @@ class Move(metaclass=PoolMeta):
                 if current_lots:
                     lots.append(current_lots[0])
                     continue
-                to_create.append({
-                        'product': self.product,
-                        'number': number,
-                        })
+                new_lot = self._get_new_lot()
+                new_lot['number'] = number
+                to_create.append(new_lot)
             if to_create:
-                lots += Lot.create(to_create)
+                lots += list(Lot.create(to_create))
         count = count or len(lots)
         moves = self.split(quantity, uom, count)
         #Last move must be without lot
@@ -100,6 +103,11 @@ class Move(metaclass=PoolMeta):
             move.lot = lot
             move.save()
         return moves
+
+    def _get_new_lot(self):
+        return {
+            'product': self.product.id,
+        }
 
 
 class SplitMoveStart(metaclass=PoolMeta):
